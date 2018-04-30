@@ -1,1 +1,27 @@
 
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Image Viewer</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="./css/jquery.verySimpleImageViewer.css" >
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="./js/jquery.verySimpleImageViewer.js"></script>
+    </head>
+    <body>
+        <div id="imageViewerContainer" style="width: 800px; height:700px;" ></div>
+        <script>
+            var curect_file_path = "pic/ethiopia-pic-country.jpg";
+            $("#imageViewerContainer").verySimpleImageViewer({
+                imageSource: curect_file_path,
+                frame: ['100%', '100%'],
+                maxZoom: '900%',
+                zoomFactor: '10%',
+                mouse: true,
+                keyboard: true,
+                toolbar: true,
+                rotateToolbar: true
+            });
+        </script>
+    </body>
+</html>
