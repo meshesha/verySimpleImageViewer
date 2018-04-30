@@ -8,8 +8,9 @@ VerySimpleImageViewer.js
 ### simple jquery plugin for display Images 
 ### Allows to zoom-in, zoom-out, and reset an image
 
-# Version: 
-### 1.10.0
+### Version:
+----
+* 1.0.0
 
 ### Support:
 ----
@@ -49,5 +50,14 @@ VerySimpleImageViewer.js
  });
 </script>
  ``` 
- 
+ keyboard shortcuts:
+ ```
+  "+" - zoom in
+  "-" - zoom out
+  "c" - reset - center image
+  "w" - move up
+  "s" - move down
+  "a" - move left
+  "d" - move right
+ ```
  
