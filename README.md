@@ -52,9 +52,9 @@ VerySimpleImageViewer.js
  ``` 
  keyboard shortcuts:
  ```
-  "+" - zoom in
-  "-" - zoom out
-  "c" - reset - center image
+  "+" or "x" or "X" - zoom in
+  "-" or "z" or "Z" - zoom out
+  "c" or "C" - reset - center image
   "w" - move up
   "s" - move down
   "a" - move left
