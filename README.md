@@ -16,8 +16,8 @@ VerySimpleImageViewer.js
 * zoom-out
 * reset
 
-## Demo
-See demo <a href="https://meshesha.github.io/jcal/" target="_blank">here</a>.
+### Demo
+* See demo <a href="https://meshesha.github.io/jcal/" target="_blank">here</a>.
 
 ###  usage:
  include necessary css files:
