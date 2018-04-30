@@ -9,17 +9,17 @@ VerySimpleImageViewer.js
 ### Allows to zoom-in, zoom-out, and reset an image
 
 ### Version:
-----
 * 1.0.0
 
 ### Support:
-----
 * zoom-in
 * zoom-out
 * reset
 
+## Demo
+See demo <a href="https://meshesha.github.io/jcal/" target="_blank">here</a>.
+
 ###  usage:
-----
  include necessary css files:
  ```
 <link rel="stylesheet" href="./css/jquery.verySimpleImageViewer.css">
