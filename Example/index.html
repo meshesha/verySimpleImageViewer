@@ -9,7 +9,16 @@
         <script src="./js/jquery.verySimpleImageViewer.js"></script>
     </head>
     <body>
-        <div id="imageViewerContainer" style="width: 800px; height:700px;" ></div>
+        <table>
+            <tr>
+                <td>
+                    <div id="imageViewerContainer" style="width: 400px; height:350px;" ></div>
+                </td>
+                <td>
+                        <div id="imageViewerContainer2" style="width: 400px; height:350px;" ></div>
+                </td>
+            </tr>
+        </table>
         <script>
             var curect_file_path = "pic/ethiopia-pic-country.jpg";
             $("#imageViewerContainer").verySimpleImageViewer({
@@ -17,6 +26,18 @@
                 frame: ['100%', '100%'],
                 maxZoom: '900%',
                 zoomFactor: '10%',
+                saveZoomPos: false,
+                mouse: true,
+                keyboard: true,
+                toolbar: true,
+                rotateToolbar: true
+            });
+            $("#imageViewerContainer2").verySimpleImageViewer({
+                imageSource: curect_file_path,
+                frame: ['100%', '100%'],
+                maxZoom: '900%',
+                zoomFactor: '10%',
+                saveZoomPos: true,
                 mouse: true,
                 keyboard: true,
                 toolbar: true,

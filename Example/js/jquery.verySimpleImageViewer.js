@@ -1,8 +1,8 @@
 
 /**
  * jquery.verySimpleImageViewer.js
- * Ver. : 1.0.0 
- * last update: 29/04/2018
+ * Ver. : 1.0.1 
+ * last update: 04/08/2018
  * Author: meshesha , https://github.com/meshesha
  * LICENSE: MIT
  * url:https://meshesha.github.io/verySimpleImageViewer
@@ -16,6 +16,7 @@
             frame: ['720px','480px',true],
             maxZoom: '300%',
             zoomFactor: '10%',
+            saveZoomPos: true,
             mouse: true,
             keyboard: true,
             toolbar: true,
@@ -26,6 +27,7 @@
         var frame = settings.frame;
         var maxZoom = settings.maxZoom;
         var zoomFactor = settings.zoomFactor;
+        var saveZoomPos = settings.saveZoomPos;
         var isMouse = settings.mouse;
         var isKeyboard = settings.keyboard;
         var isToolbar = settings.toolbar;
@@ -34,6 +36,7 @@
         var self = this;
         //var $result = $(this);
         var parent = $(this)[0];
+        var divId = parent.id;
         var image = null;
         var rotateAngle = 0;
         self.frameElement = null;
@@ -112,13 +115,17 @@
             
             var dimension = self.fitToFrame(orignalW,orignalH);
             for(var i=newZoomLevel; i>0;i--)
-                dimension[0] *= zoomFactor, dimension[1] *= zoomFactor;
+                dimension[0] *= zoomFactor,
+                dimension[1] *= zoomFactor;
             
             //Calculate percentage increase/decrease and fix the image over given x,y coordinate
             var curWidth=image.width, curHeight=image.height;
             var position = self.getPosition();
             
-            position[0]-=((x-position[0])*((dimension[0]/curWidth)-1)), position[1]-=((y-position[1])*((dimension[1]/curHeight)-1)); //Applying the above formula
+            position[0]-=((x-position[0])*((dimension[0]/curWidth)-1)),
+            position[1]-=((y-position[1])*((dimension[1]/curHeight)-1)); 
+            
+            //Applying the above formula
             
             
             //Center image
@@ -130,9 +137,20 @@
                 self.setDimension(dimension[0],dimension[1]);
                 self.setPosition(position[0],position[1]);
                 self.setMouseCursor();
-            }
-            else
+
+                //save zoomLevel, dimension, position
+                if(saveZoomPos){
+                    if (typeof(Storage) !== "undefined") {
+                        localStorage.setItem(divId+"_zoomlvl", zoomLevel);
+                        localStorage.setItem(divId+"_dimensionx", dimension[0]);
+                        localStorage.setItem(divId+"_dimensiony", dimension[1]);
+                        localStorage.setItem(divId+"_positionx", position[0]);
+                        localStorage.setItem(divId+"_positiony", position[1]);
+                    }
+                }
+            }else{
                 return false;
+            }
             return true;
         }
         self.centerImage = function(width,height, x,y) { //width and height of image and (x,y) is the (left,top) of the image
@@ -224,6 +242,13 @@
             
             position = self.centerImage(image.width,image.height, position[0],position[1]);
             self.setPosition(position[0],position[1]);
+            //save position
+            if(saveZoomPos){
+                if (typeof(Storage) !== "undefined") {
+                    localStorage.setItem(divId+"_positionx", position[0]);
+                    localStorage.setItem(divId+"_positiony", position[1]);
+                }
+            }
         }
         self.onmouseup_or_out = function(event) {
             if (!event){ //For IE
@@ -277,6 +302,13 @@
                 position = self.centerImage(image.width,image.height, position[0],position[1]);
                 self.setPosition(position[0],position[1]);
                 speed += 2;
+                //save position
+                if(saveZoomPos){
+                    if (typeof(Storage) !== "undefined") {
+                        localStorage.setItem(divId+"_positionx", position[0]);
+                        localStorage.setItem(divId+"_positiony", position[1]);
+                    }
+                }
             }
         }
         self.onkeyup = function(event) {
@@ -300,7 +332,7 @@
         }
 
         self.initImage = function() {
-            image.style.maxWidth=image.style.width=image.style.maxHeight=image.style.height=null;
+            //image.style.maxWidth=image.style.width=image.style.maxHeight=image.style.height=null;
             orignalW=image.width;
             orignalH=image.height;
             
@@ -331,10 +363,25 @@
             if(isToolbar){
                 self.loadToolbar(self);
             }
+            //set here saved zoomFactor
+            if(saveZoomPos){
+               if (typeof(Storage) !== "undefined") {
+                    var zoomlvl = localStorage.getItem(divId+"_zoomlvl");
+                    var dimensionx = localStorage.getItem(divId+"_dimensionx");
+                    var dimensiony = localStorage.getItem(divId+"_dimensiony");
+                    var positionx = localStorage.getItem(divId+"_positionx");
+                    var positiony = localStorage.getItem(divId+"_positiony");
+                    //console.log(zoomlvl,dimensionx,dimensiony,positionx,positiony)
+                    if(zoomlvl !== null){
+                        zoomLevel = parseInt(zoomlvl);
+                        self.setDimension(dimensionx, dimensiony);
+                        self.setPosition(positionx, positiony);
+                        self.setMouseCursor();
+                    }
+                }
+            }
         }
 
-        /*Set a base*/
-        self.setZoomProp(zoomFactor,maxZoom);
         //Create self.frameElement - One time initialization
         self.frameElement = document.createElement('div');
         self.frameElement.className = 'image_viewer_inner_container';
@@ -347,6 +394,8 @@
         self.frameElement.style.position="relative";
         self.frameElement.style.zIndex=2;
         self.frameElement.tabIndex=1;
+        /*Set a base*/
+        self.setZoomProp(zoomFactor,maxZoom);
                 
         if(image!=null) {
             if (parent != null) {
