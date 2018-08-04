@@ -9,7 +9,7 @@ VerySimpleImageViewer.js
 ### Allows to zoom-in, zoom-out, and reset an image
 
 ### Version:
-* 1.0.0
+* 1.0.1
 
 ### Support:
 * zoom-in
@@ -44,6 +44,7 @@ VerySimpleImageViewer.js
     frame: ['100%', '100%'], /*width and height in percent or pixels*/
     maxZoom: '900%', /*max zoom in percent*/
     zoomFactor: '10%', /*zoom steps in percent*/
+    saveZoomPos: true, /*true , false - enable or disable saving zoom position even after reload the page  */
     mouse: true,  /*true , false - enable or disable mouse usage*/
     keyboard: true, /*true , false - Enable or disable the use of keyboard shortcuts*/
     toolbar: true /*true , false - show or hide toolbar*/
@@ -61,3 +62,6 @@ VerySimpleImageViewer.js
   "d" - move right
  ```
  
+###  Changelog:
+ v.1.0.1:
+ - added saveZoomPos:(true/false) -  If true, this will keep the zoom position even after reloading the page (using web storage technology).
