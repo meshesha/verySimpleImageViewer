@@ -65,6 +65,7 @@ VerySimpleImageViewer.js
  
 ###  Changelog:
  v.1.0.2:
- - added setZoomPos:(array) -  array that contain 5 numbers: zoomLevel, dimensionX, dimensionY, positionX, positionY. See  <a href="https://meshesha.github.io/verySimpleImageViewer/" target="_blank">demo</a>.
+ - added setZoomPos:(array) -  array that contain 5 numbers: zoomLevel, dimensionX, dimensionY, positionX, positionY. See <a href="https://meshesha.github.io/verySimpleImageViewer/" target="_blank">demo</a>.
+ 
  v.1.0.1:
  - added saveZoomPos:(true/false) -  If true, this will keep the zoom position even after reloading the page (using web storage technology).
