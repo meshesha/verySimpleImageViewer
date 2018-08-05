@@ -1,8 +1,8 @@
 
 /**
  * jquery.verySimpleImageViewer.js
- * Ver. : 1.0.1 
- * last update: 04/08/2018
+ * Ver. : 1.0.2
+ * last update: 05/08/2018
  * Author: meshesha , https://github.com/meshesha
  * LICENSE: MIT
  * url:https://meshesha.github.io/verySimpleImageViewer
@@ -17,6 +17,7 @@
             maxZoom: '300%',
             zoomFactor: '10%',
             saveZoomPos: true,
+            setZoomPos: [],
             mouse: true,
             keyboard: true,
             toolbar: true,
@@ -28,6 +29,7 @@
         var maxZoom = settings.maxZoom;
         var zoomFactor = settings.zoomFactor;
         var saveZoomPos = settings.saveZoomPos;
+        var setZoomPos = settings.setZoomPos;
         var isMouse = settings.mouse;
         var isKeyboard = settings.keyboard;
         var isToolbar = settings.toolbar;
@@ -133,11 +135,7 @@
             
             //Set dimension and position
             if(!self.maxZoomCheck(dimension[0],dimension[1])) {
-                zoomLevel = newZoomLevel;
-                self.setDimension(dimension[0],dimension[1]);
-                self.setPosition(position[0],position[1]);
-                self.setMouseCursor();
-
+               self.setZoomPosition(newZoomLevel,dimension[0],dimension[1],position[0],position[1]);
                 //save zoomLevel, dimension, position
                 if(saveZoomPos){
                     if (typeof(Storage) !== "undefined") {
@@ -152,6 +150,20 @@
                 return false;
             }
             return true;
+        }
+        self.setZoomPosition = function(zoomLvl,dX,dY,pX ,pY){
+            zoomLevel = parseInt(zoomLvl);
+            self.setDimension(dX,dY);
+            self.setPosition(pX,pY);
+            self.setMouseCursor();
+        }
+        self.getZoomInf = function(){
+            var dim_array = self.getDimension();
+            var pos_array = self.getPosition();
+            console.log("[zoomLevel, dimensionX, dimensionY, positionX, positionY]=");
+            console.log("[",zoomLevel,",",dim_array[0],",",dim_array[1],",",pos_array[0],",",pos_array[1],"]");
+            //console.log($("#"+divId + " .image_pos_info").length)
+            //$("#"+divId).append('<div class="image_pos_info">חדששש</div>');
         }
         self.centerImage = function(width,height, x,y) { //width and height of image and (x,y) is the (left,top) of the image
             if(typeof width=='undefined' || typeof height=='undefined') {
@@ -280,9 +292,8 @@
                 keyCode = event.which, event.preventDefault();
             }
             keyCode = String.fromCharCode(keyCode);
-            
             var position = self.getPosition();
-            var LEFT='a',UP='w',RIGHT='d',DOWN='s', CENTER_IMAGE='c', ZOOMIN='=', ZOOMOUT='-'; ///Keys a,w,d,s
+            var LEFT='a',UP='w',RIGHT='d',DOWN='s', CENTER_IMAGE='c', ZOOMIN='=', ZOOMOUT='-' , ZOOM_INFO='i'; ///Keys a,w,d,s
             if(keyCode == LEFT){
                 position[0]+=speed;
             }else if(keyCode == UP){
@@ -297,6 +308,8 @@
                 self.zoomTo(zoomLevel+1, self.frameElement.clientWidth/2, self.frameElement.clientHeight/2);
             }else if( (keyCode == ZOOMOUT || keyCode == 'z' || keyCode == 'Z') && zoomLevel > 0){
                 self.zoomTo(zoomLevel-1, self.frameElement.clientWidth/2, self.frameElement.clientHeight/2);
+            }else if(keyCode==ZOOM_INFO || keyCode == 'I'){
+                self.getZoomInf();
             }
             if(keyCode == LEFT || keyCode == UP || keyCode == RIGHT || keyCode == DOWN) {
                 position = self.centerImage(image.width,image.height, position[0],position[1]);
@@ -363,7 +376,7 @@
             if(isToolbar){
                 self.loadToolbar(self);
             }
-            //set here saved zoomFactor
+            //set here saved zoom dimension and position
             if(saveZoomPos){
                if (typeof(Storage) !== "undefined") {
                     var zoomlvl = localStorage.getItem(divId+"_zoomlvl");
@@ -373,12 +386,22 @@
                     var positiony = localStorage.getItem(divId+"_positiony");
                     //console.log(zoomlvl,dimensionx,dimensiony,positionx,positiony)
                     if(zoomlvl !== null){
-                        zoomLevel = parseInt(zoomlvl);
-                        self.setDimension(dimensionx, dimensiony);
-                        self.setPosition(positionx, positiony);
-                        self.setMouseCursor();
+                        self.setZoomPosition(zoomlvl,dimensionx, dimensiony,positionx, positiony);
                     }
                 }
+            }
+
+            //set manual zoom dimension and position
+            if(setZoomPos.length == 5){
+                var zLvl = setZoomPos[0];
+                var dimX = setZoomPos[1];
+                var dimY = setZoomPos[2];
+                var posX = setZoomPos[3];
+                var posY = setZoomPos[4];
+                self.setZoomPosition(zLvl,dimX, dimY,posX, posY);
+            }else if(setZoomPos.length > 0 && setZoomPos.length < 5){
+                console.log("Error: 'setZoomPos' setting array must contain 5 numbers: [zoomLevel, dimensionX, dimensionY, positionX, positionY].'\n" + 
+                "click 'i' key after zooming the image to see this information in the console.")
             }
         }
 

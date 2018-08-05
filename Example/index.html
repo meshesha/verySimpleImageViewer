@@ -6,22 +6,94 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" type="text/css" href="./css/jquery.verySimpleImageViewer.css" >
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
         <script src="./js/jquery.verySimpleImageViewer.js"></script>
+        
+        <script>hljs.initHighlightingOnLoad();</script>
+        <style>
+        table td {
+            border-right: 1px solid #ddd;
+        }
+        </style>
     </head>
     <body>
+                
+        <a id="github" href="https://github.com/meshesha/verySimpleImageViewer">
+            <img style="position: fixed; top: 0; right: 0; border: 0;z-index: 100;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub">
+        </a>	
+        <h2>zoom in/out on all images and refresh or reload the page and see the results.</h2>
         <table>
             <tr>
                 <td>
-                    <div id="imageViewerContainer" style="width: 400px; height:350px;" ></div>
+                    <div id="imageViewerContainer1" style="width: 400px; height:350px;" ></div>
                 </td>
                 <td>
                         <div id="imageViewerContainer2" style="width: 400px; height:350px;" ></div>
+                </td>
+                <td>
+                        <div id="imageViewerContainer3" style="width: 400px; height:350px;" ></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <pre><code class="JavaScript">
+    $("#imageViewerContainer1").verySimpleImageViewer({
+        imageSource: curect_file_path,
+        frame: ['100%', '100%'],
+        maxZoom: '900%',
+        zoomFactor: '10%',
+        saveZoomPos: false,
+        mouse: true,
+        keyboard: true,
+        toolbar: true
+    });
+                    </code></pre>
+                    <div>This setting ('saveZoomPos: false') will always return the image to the initial state after refreshing the page.</div>
+                </td>
+                <td>
+                    <pre><code class="JavaScript">
+    $("#imageViewerContainer2").verySimpleImageViewer({
+        imageSource: curect_file_path,
+        frame: ['100%', '100%'],
+        maxZoom: '900%',
+        zoomFactor: '10%',
+        saveZoomPos: true,
+        mouse: true,
+        keyboard: true,
+        toolbar: true
+    });
+                    </code></pre>
+                    <div>This setting ('saveZoomPos: true') will always save the last state of the image after refreshing the page (this is also the default).</div>
+                </td>
+                <td>
+                    <pre><code class="JavaScript">
+    $("#imageViewerContainer3").verySimpleImageViewer({
+        imageSource: curect_file_path,
+        frame: ['100%', '100%'],
+        maxZoom: '900%',
+        zoomFactor: '10%',
+        saveZoomPos: false,
+        setZoomPos: [23 ,  3582 ,  2686 ,  -2211 ,  -2075],
+        mouse: true,
+        keyboard: true,
+        toolbar: true
+    });
+                    </code></pre>
+                    <div>
+                        This setting will load the image at the position and zoom level specified in the array variable : 'setZoomPos'.<br>
+                        'setZoomPos' setting array must contain 5 numbers: [zoomLevel, dimensionX, dimensionY, positionX, positionY].<br> 
+                        click 'i' key after zooming the image to see this information in the console.<i>
+                    </div>
+
                 </td>
             </tr>
         </table>
         <script>
             var curect_file_path = "pic/ethiopia-pic-country.jpg";
-            $("#imageViewerContainer").verySimpleImageViewer({
+            $("#imageViewerContainer1").verySimpleImageViewer({
                 imageSource: curect_file_path,
                 frame: ['100%', '100%'],
                 maxZoom: '900%',
@@ -29,8 +101,7 @@
                 saveZoomPos: false,
                 mouse: true,
                 keyboard: true,
-                toolbar: true,
-                rotateToolbar: true
+                toolbar: true
             });
             $("#imageViewerContainer2").verySimpleImageViewer({
                 imageSource: curect_file_path,
@@ -40,8 +111,18 @@
                 saveZoomPos: true,
                 mouse: true,
                 keyboard: true,
-                toolbar: true,
-                rotateToolbar: true
+                toolbar: true
+            });
+            $("#imageViewerContainer3").verySimpleImageViewer({
+                imageSource: curect_file_path,
+                frame: ['100%', '100%'],
+                maxZoom: '900%',
+                zoomFactor: '10%',
+                saveZoomPos: false,
+                setZoomPos: [23, 3582, 2686, -2211, -2075],
+                mouse: true,
+                keyboard: true,
+                toolbar: true
             });
         </script>
     </body>
