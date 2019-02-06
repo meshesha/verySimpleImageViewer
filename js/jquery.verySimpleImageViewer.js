@@ -271,6 +271,9 @@
             
             image.onmousemove = image.onmouseup=image.onmouseout=null;
             image.onmousedown = self.onmousedown;
+
+            image.ontouchmove = image.ontouchend = image.ontouchcancel = null;
+            image.ontouchstart = self.onmousedown;
         }
         self.onmousedown =  function(event) {
             self.frameElement.focus();
@@ -283,6 +286,10 @@
             lastMousePosition = getMouseXY(event);
             image.onmousemove = self.onmousemove;
             image.onmouseup = image.onmouseout=self.onmouseup_or_out;
+
+            image.ontouchmove = self.onmousemove;
+            image.ontouchend = image.ontouchcancel = self.onmouseup_or_out;
+
         }
         self.onkeypress = function(event) {
             var keyCode;
@@ -366,6 +373,7 @@
                 mouseWheelObject = new mouseWheel();
                 mouseWheelObject.init(image, self.onmousewheel);
                 image.onmousedown = self.onmousedown;
+                image.ontouchstart = self.onmousedown;
             }
             //Set keyboard handlers
             if(isKeyboard){
@@ -599,6 +607,10 @@
                 + document.documentElement.scrollLeft;
             posy = event.clientY + document.body.scrollTop
                 + document.documentElement.scrollTop;
+        }
+        else if (event.touches[0].pageX || event.touches[0].pageY) {
+            posx = event.touches[0].pageX;
+            posy = event.touches[0].pageY;
         }
         return [posx,posy];
     }
